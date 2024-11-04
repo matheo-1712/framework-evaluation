@@ -10,4 +10,5 @@ export class UserShow extends View<User, UserProps> {
             </div>
         `
     }
+
 }

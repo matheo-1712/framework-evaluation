@@ -2728,6 +2728,48 @@
     }
   };
 
+  // src/user/UserList.ts
+  var UserList = class extends View {
+    constructor() {
+      super(...arguments);
+      this.userCollection = User.buildCollection();
+    }
+    template() {
+      return `
+            <div>
+                <h1>Utilisateurs</h1>
+                <ul>
+                    ${this.userCollection.models.length > 0 ? this.userCollection.models.map((user) => `
+                            <li>
+                                <button class="userClick" data-user-id="${user.get("id")}">
+                                    <span>${user.get("name")}</span>
+                                    <span>${user.get("age")}</span>
+                                </button>
+                            </li>
+                        `).join("") : "<li>Aucun utilisateur trouv\xE9.</li>"}
+                </ul>
+            </div>
+        `;
+    }
+    onUserClick(event) {
+      const target = event.target;
+      const userId = target.getAttribute("data-user-id");
+      if (userId) {
+        const user = this.userCollection.models.find((u) => u.get("id") === userId);
+        if (user) {
+          const rootElement2 = document.getElementById("root");
+          const userEdit = new UserEdit(rootElement2, user);
+          userEdit.render();
+        }
+      }
+    }
+    eventsMap() {
+      return {
+        "click:.userClick": this.onUserClick
+      };
+    }
+  };
+
   // src/user/UserShow.ts
   var UserShow = class extends View {
     template() {
@@ -2745,7 +2787,8 @@
     regionsMap() {
       return {
         userShow: ".user-show",
-        userForm: ".user-form"
+        userForm: ".user-form",
+        userList: ".user-list"
       };
     }
     template() {
@@ -2753,12 +2796,14 @@
         <div>
             <div class="user-show"></div>
             <div class="user-form"></div>
+            <div class="user-list"></div>
         </div>
         `;
     }
     onRender() {
       new UserShow(this.regions.userShow, this.model).render();
       new UserForm(this.regions.userForm, this.model).render();
+      new UserList(this.regions.userList, this.model).render();
     }
   };
 
