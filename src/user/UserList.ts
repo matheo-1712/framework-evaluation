@@ -3,9 +3,10 @@ import { User, UserProps } from "./User";
 import { UserEdit } from "./UserEdit";
 
 export class UserList extends View<User, UserProps> {
-    userCollection = User.buildCollection();
+    userCollection = User.buildCollection()
 
     template(): string {
+        console.log(this.userCollection)
         return `
             <div>
                 <h1>Utilisateurs</h1>

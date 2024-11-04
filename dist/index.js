@@ -2735,6 +2735,7 @@
       this.userCollection = User.buildCollection();
     }
     template() {
+      console.log(this.userCollection);
       return `
             <div>
                 <h1>Utilisateurs</h1>
